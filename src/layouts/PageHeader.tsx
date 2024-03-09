@@ -48,7 +48,7 @@ export default function PageHeader() {
             <Search />
           </Button>
         </div>
-        <Button size="icon">
+        <Button size="icon" type="button">
           <Mic />
         </Button>
       </form>
