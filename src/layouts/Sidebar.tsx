@@ -19,15 +19,18 @@ import {
   ShoppingBag,
   Trophy,
 } from "lucide-react";
-import React, { Children, ElementType, ReactNode, useState } from "react";
+import { Children, ElementType, ReactNode, useState } from "react";
 import Button, { buttonStyles } from "../assets/components/Button";
 import { twMerge } from "tailwind-merge";
 import { playlists, subscriptions } from "../data/sidebar";
+import { useSidebarContext } from "../context/SidebarProvider";
+import { PageHeaderSection } from "./PageHeader";
 
 export default function Sidebar() {
+  const { isLargeOpen, isSmallOpen, close } = useSidebarContext();
   return (
     <>
-      <aside className="flex flex-col sticky top-0 pb-4 ml-1 overflow-y-auto scrollbar-hidden lg:hidden">
+      <aside className={`flex flex-col sticky top-0 pb-4 ml-1 overflow-y-auto scrollbar-hidden ${isLargeOpen ? "lg:hidden" : "lg:flex"}`}>
         <SmallSideBarItem Icon={Home} title="Home" url="/" />
         <SmallSideBarItem Icon={Repeat} title="Shorts" url="/shorts" />
         <SmallSideBarItem
@@ -38,7 +41,15 @@ export default function Sidebar() {
         <SmallSideBarItem Icon={Library} title="Library" url="/library" />
       </aside>
 
-      <aside className="w-56 hidden lg:sticky absolute top-0 overflow-y-auto scrollbar-hidden pb-4 px-2 lg:flex flex-col gap-2">
+      {isSmallOpen && (
+        <div onClick={close} className="lg:hidden fixed inset-0 z-[999] bg-secondary-dark opacity-50" />
+      )}
+
+      <aside className={`w-56 lg:sticky absolute top-0 overflow-y-auto scrollbar-hidden pb-4 px-2  flex-col gap-2 ${isLargeOpen ? "lg:flex" : "lg:hidden"} ${isSmallOpen ? "flex z-[999] bg-white max-h-screen" : "hidden"}`}>
+        <div className="lg:hidden px-2 pt-2 pb-4 sticky top-0 bg-white">
+          <PageHeaderSection />
+        </div>
+
         <LargeSideBarSection>
           <LargeSideBarItem
             IconOrImgUrl={Home}
@@ -100,16 +111,44 @@ export default function Sidebar() {
         <hr />
 
         <LargeSideBarSection title="Explore">
-          <LargeSideBarItem IconOrImgUrl={Flame} title="Trending" url="/trending" />
-          <LargeSideBarItem IconOrImgUrl={ShoppingBag} title="Shopping" url="/shopping" />
+          <LargeSideBarItem
+            IconOrImgUrl={Flame}
+            title="Trending"
+            url="/trending"
+          />
+          <LargeSideBarItem
+            IconOrImgUrl={ShoppingBag}
+            title="Shopping"
+            url="/shopping"
+          />
           <LargeSideBarItem IconOrImgUrl={Music2} title="Music" url="/music" />
-          <LargeSideBarItem IconOrImgUrl={Film} title="Movies & TV" url="/movies-tv" />
+          <LargeSideBarItem
+            IconOrImgUrl={Film}
+            title="Movies & TV"
+            url="/movies-tv"
+          />
           <LargeSideBarItem IconOrImgUrl={Radio} title="LIve" url="/live" />
-          <LargeSideBarItem IconOrImgUrl={Gamepad2} title="Gaming" url="/gaming" />
+          <LargeSideBarItem
+            IconOrImgUrl={Gamepad2}
+            title="Gaming"
+            url="/gaming"
+          />
           <LargeSideBarItem IconOrImgUrl={Newspaper} title="News" url="/news" />
-          <LargeSideBarItem IconOrImgUrl={Trophy} title="Learning" url="/learning" />
-          <LargeSideBarItem IconOrImgUrl={Shirt} title="Fashion & Beauty" url="/fashion-beauty" />
-          <LargeSideBarItem IconOrImgUrl={Podcast} title="Podcasts" url="/podcasts" />
+          <LargeSideBarItem
+            IconOrImgUrl={Trophy}
+            title="Learning"
+            url="/learning"
+          />
+          <LargeSideBarItem
+            IconOrImgUrl={Shirt}
+            title="Fashion & Beauty"
+            url="/fashion-beauty"
+          />
+          <LargeSideBarItem
+            IconOrImgUrl={Podcast}
+            title="Podcasts"
+            url="/podcasts"
+          />
         </LargeSideBarSection>
       </aside>
     </>
